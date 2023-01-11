@@ -76,7 +76,20 @@ const controllerBy = {
   POST: controllers.storeRefreshToken,
   GET: controllers.regenerateTokens,
   PUT: controllers.regenerateTokens,
-  // GET: controllers.displayCookies,
+  DELETE: (req, res) => {
+    const ctx = { req, res };
+    nookies.destroy(ctx, REFRESH_TOKEN_NAME, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    res.status(200).json({
+      data: {
+        message: "logout with success",
+      },
+    });
+  },
 };
 
 export default function handler(req, res) {
